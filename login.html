@@ -3,20 +3,23 @@
   <head>
     <meta charset="utf-8">
     <title>My Personal Assistant</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
   </head>
   <body>
     <h1>Login Page</h1>
     this is login page!<br>
     added to git<br>
-    <button type="button" class="btn btn-lg btn-success" id="to_Main" onclick="to_main()">To Main</button>
+    <div id="dv">
+      <button type="button" class="btn btn-lg btn-success" id="to_Main" onclick="to_main()">To Main</button>
+    </div>
     <script type="text/javascript">
+      var num=0;
       function to_main()
       {
-        location.href="./MPA.html";
+        location.href="/main";
       }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
   </body>
 </html>

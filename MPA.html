@@ -2,15 +2,61 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <style type="text/css">
+      #dv{
+        background-color: blue;
+      }
+      #category{
+        width : 90%;
+        background-color: yellow;
+        text-align: center;
+        margin:0 auto;
+      }
+      #link_div{
+        background-color: red;
+        text-align: center;
+      }
+    </style>
     <title>My Personal Assistant</title>
   </head>
-  <script type="text/javascript">
-
-  </script>
   <body>
-
     <h1>My Personal Assistant</h1>
-    
-    this is mpa!
+    this is mpa!<br>
+    <button type="button" onclick="add_div()">Add Category</button>
+    <div id="dv">
+    </div>
   </body>
+  <script type="text/javascript">
+    function add_div()
+    {
+        var category_card=document.createElement("div");
+        category_card.setAttribute("id","category");
+
+        var add_link_button=document.createElement("button");
+        add_link_button.innerHTML="Add Link";
+        add_link_button.addEventListener('click',function(){
+          var link_div=document.createElement("div");
+          link_div.setAttribute("id","link_div");
+          var title=document.createElement("p");
+          title.innerHTML="title";
+          var link=document.createElement("a");
+          link.innerHTML="https://www.youtube.com/";
+          link.setAttribute("href","https://www.youtube.com/");
+          link_div.appendChild(title);
+          link_div.appendChild(link);
+          category_card.appendChild(link_div);
+        });
+
+
+        var delete_button=document.createElement("button");
+        delete_button.innerHTML="Delete Category";
+        delete_button.addEventListener('click',function(){
+          dv.removeChild(category_card);
+        });
+
+        category_card.appendChild(add_link_button);
+        category_card.appendChild(delete_button);
+        dv.appendChild(category_card);
+    }
+  </script>
 </html>

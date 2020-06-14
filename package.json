@@ -1,0 +1,24 @@
+{
+  "name": "mpa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wbjung2917/MPA.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wbjung2917/MPA/issues"
+  },
+  "homepage": "https://github.com/wbjung2917/MPA#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.0",
+    "express": "^4.17.1",
+    "redis": "^3.0.2"
+  }
+}
