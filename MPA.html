@@ -23,7 +23,12 @@
       }
       #empty_place{
         width:100%;
-        height:150px;
+        height:230px;
+      }
+      #category_name{
+        width: 40%;
+        margin:0 auto;
+        margin-bottom: 10px;
       }
       .margins{
         margin:10px;
@@ -32,6 +37,7 @@
         width:100%;
         background-color: white;
         position:fixed;
+        z-index: 2;
       }
     </style>
     <title>My Personal Assistant</title>
@@ -39,7 +45,9 @@
   <body>
     <div class="sticky">
       <h1 style='margin-top: 20px;'>My Personal Assistant</h1>
-      <button type="button" class="btn btn-lg btn-success"onclick="add_div()">Add Category</button><br><br>
+      <input type="email" class="form-control" id="category_name" placeholder="Enter Category Name">
+      <button type="button" class="btn btn-lg btn-success" id="add_category" onclick="add_div()" disabled="true">Add Category</button><br><br>
+      <hr>
     </div>
     <div id="empty_place">
 
@@ -56,6 +64,9 @@
         var tu_div=document.createElement("div");
         tu_div.setAttribute("id","tu_div");
 
+        var ca_name=document.createElement("h3");
+        ca_name.innerHTML=document.getElementById("category_name").value;
+
         var set_title=document.createElement("input");
         set_title.setAttribute("type","email");
         set_title.setAttribute("class","form-control");
@@ -68,6 +79,7 @@
         set_url.setAttribute("id","url");
         set_url.setAttribute("placeholder","Enter URL");
 
+        tu_div.appendChild(ca_name);
         tu_div.appendChild(set_title);
         tu_div.appendChild(set_url);
 
@@ -91,6 +103,7 @@
           link.setAttribute("target","_blank");
           document.getElementById('title').value=''
           document.getElementById('url').value=''
+          add_link_button.setAttribute("disabled","true");
 
           var rm_link_button=document.createElement("button");
           rm_link_button.innerHTML="Remove Link";
@@ -119,11 +132,15 @@
             dv.removeChild(category_card);
           }
         });
-
+        var line=document.createElement("hr");
         category_card.appendChild(tu_div);
         category_card.appendChild(add_link_button);
         category_card.appendChild(delete_button);
         dv.appendChild(category_card);
+        dv.appendChild(line);
+
+        document.getElementById("category_name").value='';
+        add_category.setAttribute("disabled","true");
     }
   </script>
   <script type="text/javascript">
@@ -135,6 +152,18 @@
         }
         else {
           $("#al_button").attr("disabled",false);
+        }
+      });
+    })
+
+    $(function(){
+      $(document).on('input',"#category_name",function(){
+        if($("#category_name").val()=='')
+        {
+          $("#add_category").attr("disabled",true);
+        }
+        else {
+          $("#add_category").attr("disabled",false);
         }
       });
     })
