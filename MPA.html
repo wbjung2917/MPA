@@ -2,7 +2,11 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/bootstrap.css">
     <style type="text/css">
+      body{
+        text-align: center;
+      }
       #dv{
         background-color: blue;
       }
@@ -21,8 +25,7 @@
   </head>
   <body>
     <h1>My Personal Assistant</h1>
-    this is mpa!<br>
-    <button type="button" onclick="add_div()">Add Category</button>
+    <button type="button" class="btn btn-lg btn-success"onclick="add_div()">Add Category</button><br><br><br>
     <div id="dv">
     </div>
   </body>
@@ -59,4 +62,6 @@
         dv.appendChild(category_card);
     }
   </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
 </html>
