@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/css/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
     <style type="text/css">
       body{
         text-align: center;
@@ -36,7 +38,7 @@
   </head>
   <body>
     <div class="sticky">
-      <h1>My Personal Assistant</h1>
+      <h1 style='margin-top: 20px;'>My Personal Assistant</h1>
       <button type="button" class="btn btn-lg btn-success"onclick="add_div()">Add Category</button><br><br>
     </div>
     <div id="empty_place">
@@ -71,19 +73,39 @@
 
         var add_link_button=document.createElement("button");
         add_link_button.innerHTML="Add Link";
+        add_link_button.setAttribute("id","al_button");
+        add_link_button.setAttribute("disabled","true");
         add_link_button.setAttribute("class","btn btn-md btn-success margins");
         add_link_button.addEventListener('click',function(){
           var link_div=document.createElement("div");
           link_div.setAttribute("id","link_div");
           link_div.setAttribute("class","margins");
+
           var title=document.createElement("label");
-          title.innerHTML="title";
+          title.innerHTML=document.getElementById('title').value;
           title.setAttribute("class","margins");
+
           var link=document.createElement("a");
-          link.innerHTML="https://www.youtube.com/";
-          link.setAttribute("href","https://www.youtube.com/");
+          link.innerHTML=document.getElementById('url').value;
+          link.setAttribute("href",document.getElementById('url').value);
+          link.setAttribute("target","_blank");
+          document.getElementById('title').value=''
+          document.getElementById('url').value=''
+
+          var rm_link_button=document.createElement("button");
+          rm_link_button.innerHTML="Remove Link";
+          rm_link_button.setAttribute("id","rm_link_button");
+          rm_link_button.setAttribute("class","btn btn-sm btn-success margins");
+          rm_link_button.addEventListener('click',function(){
+            var result= confirm("Are you sure you want to remove this link?");
+            if(result)
+            {
+              category_card.removeChild(link_div);
+            }
+          });
           link_div.appendChild(title);
           link_div.appendChild(link);
+          link_div.appendChild(rm_link_button);
           category_card.appendChild(link_div);
         });
 
@@ -91,7 +113,11 @@
         delete_button.innerHTML="Delete Category";
         delete_button.setAttribute("class","btn btn-md btn-success margins");
         delete_button.addEventListener('click',function(){
-          dv.removeChild(category_card);
+          var result= confirm("Are you sure you want to remove this category?");
+          if(result)
+          {
+            dv.removeChild(category_card);
+          }
         });
 
         category_card.appendChild(tu_div);
@@ -100,6 +126,17 @@
         dv.appendChild(category_card);
     }
   </script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script type="text/javascript" src="/js/bootstrap.js"></script>
+  <script type="text/javascript">
+    $(function(){
+      $(document).on('input',"#title,#url",function(){
+        if($("#title").val()==''||$("#url").val()=='')
+        {
+          $("#al_button").attr("disabled",true);
+        }
+        else {
+          $("#al_button").attr("disabled",false);
+        }
+      });
+    })
+  </script>
 </html>

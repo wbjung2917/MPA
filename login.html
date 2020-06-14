@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/css/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
     <style type="text/css">
       html, body{
         width:100%;
@@ -24,7 +26,7 @@
       <h1>My Personal Assistant</h1>
       <br>
       <input type="email" class="form-control" id="user_name" placeholder="Enter Your User Name"></input>
-      <button type="button" class="btn btn-block btn-success" id="to_Main" onclick="to_main()">Submit</button>
+      <button type="button" class="btn btn-block btn-success" id="to_Main" disabled="true" onclick="to_main()">Submit</button>
     </div>
     <script type="text/javascript">
       var num=0;
@@ -33,7 +35,20 @@
         location.href="/main";
       }
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        $(document).on('input',"#user_name",function(){
+          if($("#user_name").val()=='')
+          {
+            $("#to_Main").attr("disabled",true);
+          }
+          else {
+            $("#to_Main").attr("disabled",false);
+          }
+        });
+      })
+    </script>
+
   </body>
 </html>
