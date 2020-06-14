@@ -7,25 +7,41 @@
       body{
         text-align: center;
       }
-      #dv{
-        background-color: blue;
+      #tu_div{
+        width:30%;
+        margin:0 auto;
       }
       #category{
         width : 90%;
-        background-color: yellow;
         text-align: center;
         margin:0 auto;
       }
       #link_div{
-        background-color: red;
         text-align: center;
+      }
+      #empty_place{
+        width:100%;
+        height:150px;
+      }
+      .margins{
+        margin:10px;
+      }
+      .sticky{
+        width:100%;
+        background-color: white;
+        position:fixed;
       }
     </style>
     <title>My Personal Assistant</title>
   </head>
   <body>
-    <h1>My Personal Assistant</h1>
-    <button type="button" class="btn btn-lg btn-success"onclick="add_div()">Add Category</button><br><br><br>
+    <div class="sticky">
+      <h1>My Personal Assistant</h1>
+      <button type="button" class="btn btn-lg btn-success"onclick="add_div()">Add Category</button><br><br>
+    </div>
+    <div id="empty_place">
+
+    </div>
     <div id="dv">
     </div>
   </body>
@@ -35,13 +51,34 @@
         var category_card=document.createElement("div");
         category_card.setAttribute("id","category");
 
+        var tu_div=document.createElement("div");
+        tu_div.setAttribute("id","tu_div");
+
+        var set_title=document.createElement("input");
+        set_title.setAttribute("type","email");
+        set_title.setAttribute("class","form-control");
+        set_title.setAttribute("id","title");
+        set_title.setAttribute("placeholder","Enter Title");
+
+        var set_url=document.createElement("input");
+        set_url.setAttribute("type","email");
+        set_url.setAttribute("class","form-control");
+        set_url.setAttribute("id","url");
+        set_url.setAttribute("placeholder","Enter URL");
+
+        tu_div.appendChild(set_title);
+        tu_div.appendChild(set_url);
+
         var add_link_button=document.createElement("button");
         add_link_button.innerHTML="Add Link";
+        add_link_button.setAttribute("class","btn btn-md btn-success margins");
         add_link_button.addEventListener('click',function(){
           var link_div=document.createElement("div");
           link_div.setAttribute("id","link_div");
-          var title=document.createElement("p");
+          link_div.setAttribute("class","margins");
+          var title=document.createElement("label");
           title.innerHTML="title";
+          title.setAttribute("class","margins");
           var link=document.createElement("a");
           link.innerHTML="https://www.youtube.com/";
           link.setAttribute("href","https://www.youtube.com/");
@@ -50,13 +87,14 @@
           category_card.appendChild(link_div);
         });
 
-
         var delete_button=document.createElement("button");
         delete_button.innerHTML="Delete Category";
+        delete_button.setAttribute("class","btn btn-md btn-success margins");
         delete_button.addEventListener('click',function(){
           dv.removeChild(category_card);
         });
 
+        category_card.appendChild(tu_div);
         category_card.appendChild(add_link_button);
         category_card.appendChild(delete_button);
         dv.appendChild(category_card);
