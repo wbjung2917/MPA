@@ -26,16 +26,8 @@
       <h1>My Personal Assistant</h1>
       <br>
       <input type="email" class="form-control" id="user_name" placeholder="Enter Your User Name">
-      <button type="button" class="btn btn-block btn-success" id="to_Main" disabled="true" onclick="to_main()">Submit</button>
+      <button type="button" class="btn btn-block btn-success" id="to_Main" disabled="true">Submit</button>
     </div>
-    <script type="text/javascript">
-      var num=0;
-      function to_main()
-      {
-        location.href="/main";
-      }
-    </script>
-
     <script type="text/javascript">
       $(function(){
         $(document).on('input',"#user_name",function(){
@@ -48,6 +40,18 @@
           }
         });
       })
+
+      $("#to_Main").click(function(){
+        $.ajax({
+          method: "POST",
+          url: "/",
+          data: {
+            username: $("#user_name").val()
+          }
+        })
+
+        location.href="/main";
+      });
     </script>
 
   </body>

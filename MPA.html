@@ -5,30 +5,40 @@
     <link rel="stylesheet" href="/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/text/javascript">
+      function msg(){
+        const redis = require("redis");
+        const client = redis.createClient();
+
+        client.on("error", function(error) {
+          console.error(error);
+        });
+
+        client.set("key", "value", redis.print);
+        client.get("key", redis.print);
+
+        exports.helloWorld = function(){
+          console.log('hello redis!');
+          return 'hello redis!';
+        };
+      }
+      window.onload=msg;
+    </script>
     <style type="text/css">
       body{
         text-align: center;
       }
-      #tu_div{
-        width:30%;
-        margin:0 auto;
-      }
-      #category{
-        width : 90%;
-        text-align: center;
-        margin:0 auto;
-      }
       #link_div{
         text-align: center;
+        margin:0 auto;
       }
       #empty_place{
         width:100%;
-        height:230px;
+        height:300px;
       }
-      #category_name{
+      .text{
         width: 40%;
-        margin:0 auto;
-        margin-bottom: 10px;
+        margin:10px auto;
       }
       .margins{
         margin:10px;
@@ -45,127 +55,129 @@
   <body>
     <div class="sticky">
       <h1 style='margin-top: 20px;'>My Personal Assistant</h1>
-      <input type="email" class="form-control" id="category_name" placeholder="Enter Category Name">
-      <button type="button" class="btn btn-lg btn-success" id="add_category" onclick="add_div()" disabled="true">Add Category</button><br><br>
+      <input type="email" class="form-control text" id="title" placeholder="Enter Title">
+      <input type="email" class="form-control text" id="url" placeholder="Enter URL">
+      <button type="button" class="btn btn-lg btn-success margins" id="al_button" disabled="true">Add Link</button>
       <hr>
     </div>
     <div id="empty_place">
-
     </div>
     <div id="dv">
     </div>
-  </body>
-  <script type="text/javascript">
-    function add_div()
-    {
-        var category_card=document.createElement("div");
-        category_card.setAttribute("id","category");
-
-        var tu_div=document.createElement("div");
-        tu_div.setAttribute("id","tu_div");
-
-        var ca_name=document.createElement("h3");
-        ca_name.innerHTML=document.getElementById("category_name").value;
-
-        var set_title=document.createElement("input");
-        set_title.setAttribute("type","email");
-        set_title.setAttribute("class","form-control");
-        set_title.setAttribute("id","title");
-        set_title.setAttribute("placeholder","Enter Title");
-
-        var set_url=document.createElement("input");
-        set_url.setAttribute("type","email");
-        set_url.setAttribute("class","form-control");
-        set_url.setAttribute("id","url");
-        set_url.setAttribute("placeholder","Enter URL");
-
-        tu_div.appendChild(ca_name);
-        tu_div.appendChild(set_title);
-        tu_div.appendChild(set_url);
-
-        var add_link_button=document.createElement("button");
-        add_link_button.innerHTML="Add Link";
-        add_link_button.setAttribute("id","al_button");
-        add_link_button.setAttribute("disabled","true");
-        add_link_button.setAttribute("class","btn btn-md btn-success margins");
-        add_link_button.addEventListener('click',function(){
-          var link_div=document.createElement("div");
-          link_div.setAttribute("id","link_div");
-          link_div.setAttribute("class","margins");
-
-          var title=document.createElement("label");
-          title.innerHTML=document.getElementById('title').value;
-          title.setAttribute("class","margins");
-
-          var link=document.createElement("a");
-          link.innerHTML=document.getElementById('url').value;
-          link.setAttribute("href",document.getElementById('url').value);
-          link.setAttribute("target","_blank");
-          document.getElementById('title').value=''
-          document.getElementById('url').value=''
-          add_link_button.setAttribute("disabled","true");
-
-          var rm_link_button=document.createElement("button");
-          rm_link_button.innerHTML="Remove Link";
-          rm_link_button.setAttribute("id","rm_link_button");
-          rm_link_button.setAttribute("class","btn btn-sm btn-success margins");
-          rm_link_button.addEventListener('click',function(){
-            var result= confirm("Are you sure you want to remove this link?");
-            if(result)
-            {
-              category_card.removeChild(link_div);
-            }
-          });
-          link_div.appendChild(title);
-          link_div.appendChild(link);
-          link_div.appendChild(rm_link_button);
-          category_card.appendChild(link_div);
-        });
-
-        var delete_button=document.createElement("button");
-        delete_button.innerHTML="Delete Category";
-        delete_button.setAttribute("class","btn btn-md btn-success margins");
-        delete_button.addEventListener('click',function(){
-          var result= confirm("Are you sure you want to remove this category?");
-          if(result)
+    <script>
+      $(function(){
+        $(document).on('input',"#title,#url",function(){
+          if($("#title").val()==''||$("#url").val()=='')
           {
-            dv.removeChild(category_card);
+            $("#al_button").attr("disabled",true);
+          }
+          else {
+            $("#al_button").attr("disabled",false);
           }
         });
-        var line=document.createElement("hr");
-        category_card.appendChild(tu_div);
-        category_card.appendChild(add_link_button);
-        category_card.appendChild(delete_button);
-        dv.appendChild(category_card);
-        dv.appendChild(line);
 
-        document.getElementById("category_name").value='';
-        add_category.setAttribute("disabled","true");
-    }
-  </script>
-  <script type="text/javascript">
-    $(function(){
-      $(document).on('input',"#title,#url",function(){
-        if($("#title").val()==''||$("#url").val()=='')
+        $.ajax({
+          method: "put",
+          url: "/main"
+        })
+        .done(function (response) {
+          console.log(response);
+          var link_list=response["linklist"];
+          var i;
+          for(i=1; i<Object.keys(link_list).length; i++)
+          {
+            var link_div=document.createElement("div");
+            link_div.setAttribute("id","link_div");
+            link_div.setAttribute("class","margins");
+
+            var title=document.createElement("label");
+            title.innerHTML=Object.keys(link_list)[i];
+            title.setAttribute("id","l_title");
+            title.setAttribute("class","margins");
+
+            var link=document.createElement("a");
+            link.innerHTML=link_list[Object.keys(link_list)[i]];
+            link.setAttribute("id","l_url");
+            link.setAttribute("href",link_list[Object.keys(link_list)[i]]);
+            link.setAttribute("target","_blank");
+            document.getElementById('title').value=''
+            document.getElementById('url').value=''
+            al_button.setAttribute("disabled","true");
+
+            var rm_link_button=document.createElement("button");
+            rm_link_button.innerHTML="Remove Link";
+            rm_link_button.setAttribute("id","rm_link_button");
+            rm_link_button.setAttribute("class","btn btn-sm btn-success margins");
+            link_div.appendChild(title);
+            link_div.appendChild(link);
+            link_div.appendChild(rm_link_button);
+            dv.appendChild(link_div);
+          }
+
+        });
+      })
+
+      $("#al_button").click(function(){
+        $.ajax({
+          method: "POST",
+          url: "/main",
+          data: {
+            username: "Heluit",
+            title: $("#title").val(),
+            url: $("#url").val()
+          }
+        })
+        .done(function (response) {
+          console.log(response);
+        });
+
+        var link_div=document.createElement("div");
+        link_div.setAttribute("id","link_div");
+        link_div.setAttribute("class","margins");
+
+        var title=document.createElement("label");
+        title.innerHTML=document.getElementById('title').value;
+        title.setAttribute("id","l_title");
+        title.setAttribute("class","margins");
+
+        var link=document.createElement("a");
+        link.innerHTML=document.getElementById('url').value;
+        link.setAttribute("id","l_url");
+        link.setAttribute("href",document.getElementById('url').value);
+        link.setAttribute("target","_blank");
+        document.getElementById('title').value=''
+        document.getElementById('url').value=''
+        al_button.setAttribute("disabled","true");
+
+        var rm_link_button=document.createElement("button");
+        rm_link_button.innerHTML="Remove Link";
+        rm_link_button.setAttribute("id","rm_link_button");
+        rm_link_button.setAttribute("class","btn btn-sm btn-success margins");
+        link_div.appendChild(title);
+        link_div.appendChild(link);
+        link_div.appendChild(rm_link_button);
+        dv.appendChild(link_div);
+      });
+
+      $(document).on("click","#rm_link_button",function(){
+        $.ajax({
+          method: "DELETE",
+          url: "/main",
+          data: {
+            username: "Heluit",
+            title: $(this).siblings("#l_title").text()
+          }
+        })
+        .done(function (response) {
+          console.log(response);
+        });
+
+        var result= confirm("Are you sure you want to remove this link?");
+        if(result)
         {
-          $("#al_button").attr("disabled",true);
-        }
-        else {
-          $("#al_button").attr("disabled",false);
+          $(this).parent().remove();
         }
       });
-    })
-
-    $(function(){
-      $(document).on('input',"#category_name",function(){
-        if($("#category_name").val()=='')
-        {
-          $("#add_category").attr("disabled",true);
-        }
-        else {
-          $("#add_category").attr("disabled",false);
-        }
-      });
-    })
-  </script>
+    </script>
+  </body>
 </html>
